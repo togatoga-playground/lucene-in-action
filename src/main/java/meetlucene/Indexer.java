@@ -1,4 +1,4 @@
-package org.example;
+package meetlucene;
 
 import java.io.File;
 import java.io.FileFilter;
