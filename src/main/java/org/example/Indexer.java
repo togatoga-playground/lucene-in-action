@@ -64,8 +64,8 @@ public class Indexer {
 
     protected Document getDocument(File f) throws Exception {
         Document doc = new Document();
-        // analyzed & stored
-        doc.add(new Field("contents", new FileReader(f), TextField.TYPE_STORED));
+        // analyzed
+        doc.add(new TextField("contents", new FileReader(f)));
         // NOT analyzed & stored
         doc.add(new Field("filename", f.getName(), StringField.TYPE_STORED));
         // NOT analyzed & stored
