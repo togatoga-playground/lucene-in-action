@@ -12,6 +12,7 @@ repositories {
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation 'org.junit.jupiter:junit-jupiter-api:5.5.1'
     implementation group: 'org.apache.lucene', name: 'lucene-core', version: '10.0.0'
     implementation group: 'org.apache.lucene', name: 'lucene-analysis-common', version: '10.0.0'
     implementation group: 'org.apache.lucene', name: 'lucene-queryparser', version: '10.0.0'
