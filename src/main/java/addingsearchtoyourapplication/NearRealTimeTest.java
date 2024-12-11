@@ -31,6 +31,7 @@ public class NearRealTimeTest {
                 doc.add(new TextField("text", "aaa", Field.Store.NO));
                 writer.addDocument(doc);
             }
+            // near-real-time search
             DirectoryReader reader = DirectoryReader.open(writer);
             IndexSearcher searcher = new IndexSearcher(reader);
 
