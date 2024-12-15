@@ -3,12 +3,10 @@ package addingsearchtoyourapplication;
 import common.TestUtil;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.StoredFields;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.TermQuery;
-import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
 import org.junit.jupiter.api.Test;
 
@@ -56,6 +54,22 @@ public class BasicSearchingTest {
             Query query = new TermQuery(t);
             TopDocs docs = searcher.search(query, 10);
             assertEquals(1, docs.totalHits.value(), "JUnit in Action");
+            dir.close();
+        }
+    }
+
+    @Test
+    public void termRangeQuery() throws Exception {
+        Directory dir = TestUtil.getBookIndexDirectory();
+        try (DirectoryReader reader = DirectoryReader.open(dir)) {
+            IndexSearcher searcher = new IndexSearcher(reader);
+            Query query = TermRangeQuery.newStringRange("title2", "d", "j", true, true);
+            TopDocs docs = searcher.search(query, 10);
+            assertEquals(3, docs.totalHits.value());
+            StoredFields storedFields = searcher.storedFields();
+            for (ScoreDoc scoreDoc : docs.scoreDocs) {
+                System.out.println(storedFields.document(scoreDoc.doc).get("title2"));
+            }
             dir.close();
         }
     }
