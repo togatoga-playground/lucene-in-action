@@ -133,4 +133,23 @@ public class BasicSearchingTest {
             assertTrue(TestUtil.hitsIncludeTitle(searcher, docs, "Lucene in Action, Second Edition"));
         }
     }
+
+    @Test
+    public void or() throws Exception {
+        Directory dir = TestUtil.getBookIndexDirectory();
+        try (DirectoryReader reader = DirectoryReader.open(dir)) {
+            IndexSearcher searcher = new IndexSearcher(reader);
+            TermQuery methodologyBooks = new TermQuery(new Term("category", "/technology/computers/programming/methodology"));
+            TermQuery easternPhilosophyBooks = new TermQuery(new Term("category", "/philosophy/eastern"));
+
+            BooleanQuery.Builder methodologyOrEasternPhilosophy = new BooleanQuery.Builder();
+            methodologyOrEasternPhilosophy.add(methodologyBooks, BooleanClause.Occur.SHOULD);
+            methodologyOrEasternPhilosophy.add(easternPhilosophyBooks, BooleanClause.Occur.SHOULD);
+
+            TopDocs docs = searcher.search(methodologyOrEasternPhilosophy.build(), 10);
+            System.out.println("or = " + methodologyOrEasternPhilosophy.build());
+            assertTrue(TestUtil.hitsIncludeTitle(searcher, docs, "Extreme Programming Explained"));
+            assertTrue(TestUtil.hitsIncludeTitle(searcher, docs, "Tao Te Ching \u9053\u5FB7\u7D93"));
+        }
+    }
 }
