@@ -56,7 +56,6 @@ public class CreateTestIndex {
             throw new RuntimeException(pe);
         }
 
-
         for (String text : new String[] {title, subject, author, category}) {
             doc.add(new TextField("contents", text, Field.Store.NO));
         }

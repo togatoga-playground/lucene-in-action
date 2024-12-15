@@ -1,7 +1,6 @@
 package addingsearchtoyourapplication;
 
 import common.TestUtil;
-import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.Term;
@@ -44,6 +43,19 @@ public class BasicSearchingTest {
             query = parser.parse("mock OR junit");
             docs = searcher.search(query, 10);
             assertEquals(2, docs.totalHits.value(), "Ant in Action, JUnit in Action");
+            dir.close();
+        }
+    }
+
+    @Test
+    public void keyword() throws Exception {
+        Directory dir = TestUtil.getBookIndexDirectory();
+        try (DirectoryReader reader = DirectoryReader.open(dir)) {
+            IndexSearcher searcher = new IndexSearcher(reader);
+            Term t = new Term("isbn", "9781935182023");
+            Query query = new TermQuery(t);
+            TopDocs docs = searcher.search(query, 10);
+            assertEquals(1, docs.totalHits.value(), "JUnit in Action");
             dir.close();
         }
     }
