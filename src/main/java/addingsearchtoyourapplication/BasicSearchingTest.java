@@ -2,7 +2,6 @@ package addingsearchtoyourapplication;
 
 import common.TestUtil;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.collation.CollationKeyAnalyzer;
 import org.apache.lucene.document.IntPoint;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.StoredFields;
