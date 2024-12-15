@@ -117,4 +117,20 @@ public class BasicSearchingTest {
             assertTrue(programmingAndBelow >= justProgramming);
         }
     }
+
+    @Test
+    public void and() throws Exception {
+        Directory dir = TestUtil.getBookIndexDirectory();
+        try (DirectoryReader reader = DirectoryReader.open(dir)) {
+            IndexSearcher searcher = new IndexSearcher(reader);
+            TermQuery searchingBooks = new TermQuery(new Term("subject", "search"));
+            Query books2010 = IntPoint.newRangeQuery("pubmonth", 201001, 201012);
+            BooleanQuery.Builder searchingBooks2010 = new BooleanQuery.Builder();
+            searchingBooks2010.add(searchingBooks, BooleanClause.Occur.MUST);
+            searchingBooks2010.add(books2010, BooleanClause.Occur.MUST);
+
+            TopDocs docs = searcher.search(searchingBooks2010.build(), 10);
+            assertTrue(TestUtil.hitsIncludeTitle(searcher, docs, "Lucene in Action, Second Edition"));
+        }
+    }
 }
